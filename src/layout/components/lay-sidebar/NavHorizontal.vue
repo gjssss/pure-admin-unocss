@@ -4,7 +4,6 @@ import { useNav } from '@/layout/hooks/useNav'
 import { usePermissionStoreHook } from '@/store/modules/permission'
 import { emitter } from '@/utils/mitt'
 import LogoutCircleRLine from '@iconify-icons/ri/logout-circle-r-line'
-import Setting from '@iconify-icons/ri/settings-3-line'
 import { isAllEmpty, storageLocal } from '@pureadmin/utils'
 import { computed, nextTick, onMounted, ref } from 'vue'
 import LayNotice from '../lay-notice/index.vue'
@@ -100,7 +99,7 @@ onMounted(() => {
         title="打开系统配置"
         @click="onPanel"
       >
-        <IconifyIconOffline :icon="Setting" />
+        <div class="i-ri-settings-3-line c-text_color_primary" />
       </span>
     </div>
   </div>

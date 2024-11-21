@@ -4,6 +4,7 @@ import { themePreprocessorPlugin } from '@pureadmin/theme'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { visualizer } from 'rollup-plugin-visualizer'
+import Unocss from 'unocss/vite'
 import checker from 'vite-plugin-checker'
 import { vitePluginFakeServer } from 'vite-plugin-fake-server'
 import removeConsole from 'vite-plugin-remove-console'
@@ -25,6 +26,7 @@ export function getPluginsList(
     vue(),
     // jsx、tsx语法支持
     vueJsx(),
+    Unocss(),
     checker({
       typescript: true,
       vueTsc: true,

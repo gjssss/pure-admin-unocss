@@ -42,7 +42,6 @@ export default {
       true,
       {
         ignoreAtRules: [
-          'tailwind',
           'apply',
           'variants',
           'responsive',

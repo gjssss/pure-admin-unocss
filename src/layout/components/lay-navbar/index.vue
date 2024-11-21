@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useNav } from '@/layout/hooks/useNav'
 import LogoutCircleRLine from '@iconify-icons/ri/logout-circle-r-line'
-import Setting from '@iconify-icons/ri/settings-3-line'
+// import Setting from '@iconify-icons/ri/settings-3-line'
 import LayNotice from '../lay-notice/index.vue'
 import LaySearch from '../lay-search/index.vue'
 import LaySidebarBreadCrumb from '../lay-sidebar/components/SidebarBreadCrumb.vue'
@@ -69,7 +69,7 @@ const {
         title="打开系统配置"
         @click="onPanel"
       >
-        <IconifyIconOffline :icon="Setting" />
+        <div class="i-ri-settings-3-line c-text_color_primary" />
       </span>
     </div>
   </div>
