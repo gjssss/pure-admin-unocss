@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { useGlobal } from "@pureadmin/utils";
-import { useNav } from "@/layout/hooks/useNav";
+import { useNav } from '@/layout/hooks/useNav'
+import ArrowLeft from '@iconify-icons/ri/arrow-left-double-fill'
+import { useGlobal } from '@pureadmin/utils'
 
-import ArrowLeft from "@iconify-icons/ri/arrow-left-double-fill";
+import { computed } from 'vue'
 
 interface Props {
-  isActive: boolean;
+  isActive: boolean
 }
 
 withDefaults(defineProps<Props>(), {
-  isActive: false
-});
-
-const { tooltipEffect } = useNav();
-
-const iconClass = computed(() => {
-  return ["w-[16px]", "h-[16px]"];
-});
-
-const { $storage } = useGlobal<GlobalPropertiesApi>();
-const themeColor = computed(() => $storage.layout?.themeColor);
+  isActive: false,
+})
 
 const emit = defineEmits<{
-  (e: "toggleClick"): void;
-}>();
+  (e: 'toggleClick'): void
+}>()
 
-const toggleClick = () => {
-  emit("toggleClick");
-};
+const { tooltipEffect } = useNav()
+
+const iconClass = computed(() => {
+  return ['w-[16px]', 'h-[16px]']
+})
+
+const { $storage } = useGlobal<GlobalPropertiesApi>()
+const themeColor = computed(() => $storage.layout?.themeColor)
+
+function toggleClick() {
+  emit('toggleClick')
+}
 </script>
 
 <template>
@@ -37,7 +37,7 @@ const toggleClick = () => {
       content: isActive ? '点击折叠' : '点击展开',
       theme: tooltipEffect,
       hideOnClick: 'toggle',
-      placement: 'right'
+      placement: 'right',
     }"
     class="center-collapse"
     @click="toggleClick"

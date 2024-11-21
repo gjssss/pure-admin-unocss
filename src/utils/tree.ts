@@ -3,22 +3,23 @@
  * @param tree 树
  * @returns 每一项uniqueId组成的数组
  */
-export const extractPathList = (tree: any[]): any => {
+export function extractPathList(tree: any[]): any {
   if (!Array.isArray(tree)) {
-    console.warn("tree must be an array");
-    return [];
+    console.warn('tree must be an array')
+    return []
   }
-  if (!tree || tree.length === 0) return [];
-  const expandedPaths: Array<number | string> = [];
+  if (!tree || tree.length === 0)
+    return []
+  const expandedPaths: Array<number | string> = []
   for (const node of tree) {
-    const hasChildren = node.children && node.children.length > 0;
+    const hasChildren = node.children && node.children.length > 0
     if (hasChildren) {
-      extractPathList(node.children);
+      extractPathList(node.children)
     }
-    expandedPaths.push(node.uniqueId);
+    expandedPaths.push(node.uniqueId)
   }
-  return expandedPaths;
-};
+  return expandedPaths
+}
 
 /**
  * @description 如果父级下children的length为1，删除children并自动组建唯一uniqueId
@@ -26,26 +27,28 @@ export const extractPathList = (tree: any[]): any => {
  * @param pathList 每一项的id组成的数组
  * @returns 组件唯一uniqueId后的树
  */
-export const deleteChildren = (tree: any[], pathList = []): any => {
+export function deleteChildren(tree: any[], pathList = []): any {
   if (!Array.isArray(tree)) {
-    console.warn("menuTree must be an array");
-    return [];
+    console.warn('menuTree must be an array')
+    return []
   }
-  if (!tree || tree.length === 0) return [];
+  if (!tree || tree.length === 0)
+    return []
   for (const [key, node] of tree.entries()) {
-    if (node.children && node.children.length === 1) delete node.children;
-    node.id = key;
-    node.parentId = pathList.length ? pathList[pathList.length - 1] : null;
-    node.pathList = [...pathList, node.id];
-    node.uniqueId =
-      node.pathList.length > 1 ? node.pathList.join("-") : node.pathList[0];
-    const hasChildren = node.children && node.children.length > 0;
+    if (node.children && node.children.length === 1)
+      delete node.children
+    node.id = key
+    node.parentId = pathList.length ? pathList[pathList.length - 1] : null
+    node.pathList = [...pathList, node.id]
+    node.uniqueId
+      = node.pathList.length > 1 ? node.pathList.join('-') : node.pathList[0]
+    const hasChildren = node.children && node.children.length > 0
     if (hasChildren) {
-      deleteChildren(node.children, node.pathList);
+      deleteChildren(node.children, node.pathList)
     }
   }
-  return tree;
-};
+  return tree
+}
 
 /**
  * @description 创建层级关系
@@ -53,23 +56,24 @@ export const deleteChildren = (tree: any[], pathList = []): any => {
  * @param pathList 每一项的id组成的数组
  * @returns 创建层级关系后的树
  */
-export const buildHierarchyTree = (tree: any[], pathList = []): any => {
+export function buildHierarchyTree(tree: any[], pathList = []): any {
   if (!Array.isArray(tree)) {
-    console.warn("tree must be an array");
-    return [];
+    console.warn('tree must be an array')
+    return []
   }
-  if (!tree || tree.length === 0) return [];
+  if (!tree || tree.length === 0)
+    return []
   for (const [key, node] of tree.entries()) {
-    node.id = key;
-    node.parentId = pathList.length ? pathList[pathList.length - 1] : null;
-    node.pathList = [...pathList, node.id];
-    const hasChildren = node.children && node.children.length > 0;
+    node.id = key
+    node.parentId = pathList.length ? pathList[pathList.length - 1] : null
+    node.pathList = [...pathList, node.id]
+    const hasChildren = node.children && node.children.length > 0
     if (hasChildren) {
-      buildHierarchyTree(node.children, node.pathList);
+      buildHierarchyTree(node.children, node.pathList)
     }
   }
-  return tree;
-};
+  return tree
+}
 
 /**
  * @description 广度优先遍历，根据唯一uniqueId找当前节点信息
@@ -77,23 +81,22 @@ export const buildHierarchyTree = (tree: any[], pathList = []): any => {
  * @param uniqueId 唯一uniqueId
  * @returns 当前节点信息
  */
-export const getNodeByUniqueId = (
-  tree: any[],
-  uniqueId: number | string
-): any => {
+export function getNodeByUniqueId(tree: any[], uniqueId: number | string): any {
   if (!Array.isArray(tree)) {
-    console.warn("menuTree must be an array");
-    return [];
+    console.warn('menuTree must be an array')
+    return []
   }
-  if (!tree || tree.length === 0) return [];
-  const item = tree.find(node => node.uniqueId === uniqueId);
-  if (item) return item;
+  if (!tree || tree.length === 0)
+    return []
+  const item = tree.find(node => node.uniqueId === uniqueId)
+  if (item)
+    return item
   const childrenList = tree
     .filter(node => node.children)
     .map(i => i.children)
-    .flat(1) as unknown;
-  return getNodeByUniqueId(childrenList as any[], uniqueId);
-};
+    .flat(1) as unknown
+  return getNodeByUniqueId(childrenList as any[], uniqueId)
+}
 
 /**
  * @description 向当前唯一uniqueId节点中追加字段
@@ -102,29 +105,31 @@ export const getNodeByUniqueId = (
  * @param fields 需要追加的字段
  * @returns 追加字段后的树
  */
-export const appendFieldByUniqueId = (
+export function appendFieldByUniqueId(
   tree: any[],
   uniqueId: number | string,
-  fields: object
-): any => {
+  fields: object,
+): any {
   if (!Array.isArray(tree)) {
-    console.warn("menuTree must be an array");
-    return [];
+    console.warn('menuTree must be an array')
+    return []
   }
-  if (!tree || tree.length === 0) return [];
+  if (!tree || tree.length === 0)
+    return []
   for (const node of tree) {
-    const hasChildren = node.children && node.children.length > 0;
+    const hasChildren = node.children && node.children.length > 0
     if (
-      node.uniqueId === uniqueId &&
-      Object.prototype.toString.call(fields) === "[object Object]"
-    )
-      Object.assign(node, fields);
+      node.uniqueId === uniqueId
+      && Object.prototype.toString.call(fields) === '[object Object]'
+    ) {
+      Object.assign(node, fields)
+    }
     if (hasChildren) {
-      appendFieldByUniqueId(node.children, uniqueId, fields);
+      appendFieldByUniqueId(node.children, uniqueId, fields)
     }
   }
-  return tree;
-};
+  return tree
+}
 
 /**
  * @description 构造树型结构数据
@@ -134,55 +139,55 @@ export const appendFieldByUniqueId = (
  * @param children 子节点字段，默认children
  * @returns 追加字段后的树
  */
-export const handleTree = (
+export function handleTree(
   data: any[],
   id?: string,
   parentId?: string,
-  children?: string
-): any => {
+  children?: string,
+): any {
   if (!Array.isArray(data)) {
-    console.warn("data must be an array");
-    return [];
+    console.warn('data must be an array')
+    return []
   }
   const config = {
-    id: id || "id",
-    parentId: parentId || "parentId",
-    childrenList: children || "children"
-  };
+    id: id || 'id',
+    parentId: parentId || 'parentId',
+    childrenList: children || 'children',
+  }
 
-  const childrenListMap: any = {};
-  const nodeIds: any = {};
-  const tree = [];
+  const childrenListMap: any = {}
+  const nodeIds: any = {}
+  const tree = []
 
   for (const d of data) {
-    const parentId = d[config.parentId];
+    const parentId = d[config.parentId]
     if (childrenListMap[parentId] == null) {
-      childrenListMap[parentId] = [];
+      childrenListMap[parentId] = []
     }
-    nodeIds[d[config.id]] = d;
-    childrenListMap[parentId].push(d);
+    nodeIds[d[config.id]] = d
+    childrenListMap[parentId].push(d)
   }
 
   for (const d of data) {
-    const parentId = d[config.parentId];
+    const parentId = d[config.parentId]
     if (nodeIds[parentId] == null) {
-      tree.push(d);
+      tree.push(d)
     }
   }
 
   for (const t of tree) {
-    adaptToChildrenList(t);
+    adaptToChildrenList(t)
   }
 
   function adaptToChildrenList(o: Record<string, any>) {
     if (childrenListMap[o[config.id]] !== null) {
-      o[config.childrenList] = childrenListMap[o[config.id]];
+      o[config.childrenList] = childrenListMap[o[config.id]]
     }
     if (o[config.childrenList]) {
       for (const c of o[config.childrenList]) {
-        adaptToChildrenList(c);
+        adaptToChildrenList(c)
       }
     }
   }
-  return tree;
-};
+  return tree
+}

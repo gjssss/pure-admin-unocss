@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { isAllEmpty } from "@pureadmin/utils";
-import { useNav } from "@/layout/hooks/useNav";
-import LaySearch from "../lay-search/index.vue";
-import LayNotice from "../lay-notice/index.vue";
-import { ref, toRaw, watch, onMounted, nextTick } from "vue";
-import { useRenderIcon } from "@/components/ReIcon/src/hooks";
-import { getParentPaths, findRouteByPath } from "@/router/utils";
-import { usePermissionStoreHook } from "@/store/modules/permission";
-import LaySidebarExtraIcon from "../lay-sidebar/components/SidebarExtraIcon.vue";
-import LaySidebarFullScreen from "../lay-sidebar/components/SidebarFullScreen.vue";
+import { useRenderIcon } from '@/components/ReIcon/src/hooks'
+import { useNav } from '@/layout/hooks/useNav'
+import { findRouteByPath, getParentPaths } from '@/router/utils'
+import { usePermissionStoreHook } from '@/store/modules/permission'
+import LogoutCircleRLine from '@iconify-icons/ri/logout-circle-r-line'
+import Setting from '@iconify-icons/ri/settings-3-line'
+import { isAllEmpty } from '@pureadmin/utils'
+import { nextTick, onMounted, ref, toRaw, watch } from 'vue'
+import LayNotice from '../lay-notice/index.vue'
+import LaySearch from '../lay-search/index.vue'
 
-import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
-import Setting from "@iconify-icons/ri/settings-3-line";
+import LaySidebarExtraIcon from '../lay-sidebar/components/SidebarExtraIcon.vue'
+import LaySidebarFullScreen from '../lay-sidebar/components/SidebarFullScreen.vue'
 
-const menuRef = ref();
-const defaultActive = ref(null);
+const menuRef = ref()
+const defaultActive = ref(null)
 
 const {
   route,
@@ -25,32 +25,32 @@ const {
   username,
   userAvatar,
   getDivStyle,
-  avatarsStyle
-} = useNav();
+  avatarsStyle,
+} = useNav()
 
 function getDefaultActive(routePath) {
-  const wholeMenus = usePermissionStoreHook().wholeMenus;
+  const wholeMenus = usePermissionStoreHook().wholeMenus
   /** 当前路由的父级路径 */
-  const parentRoutes = getParentPaths(routePath, wholeMenus)[0];
+  const parentRoutes = getParentPaths(routePath, wholeMenus)[0]
   defaultActive.value = !isAllEmpty(route.meta?.activePath)
     ? route.meta.activePath
-    : findRouteByPath(parentRoutes, wholeMenus)?.children[0]?.path;
+    : findRouteByPath(parentRoutes, wholeMenus)?.children[0]?.path
 }
 
 onMounted(() => {
-  getDefaultActive(route.path);
-});
+  getDefaultActive(route.path)
+})
 
 nextTick(() => {
-  menuRef.value?.handleResize();
-});
+  menuRef.value?.handleResize()
+})
 
 watch(
   () => [route.path, usePermissionStoreHook().wholeMenus],
   () => {
-    getDefaultActive(route.path);
-  }
-);
+    getDefaultActive(route.path)
+  },
+)
 </script>
 
 <template>
@@ -68,24 +68,25 @@ watch(
       :default-active="defaultActive"
     >
       <el-menu-item
-        v-for="route in usePermissionStoreHook().wholeMenus"
-        :key="route.path"
-        :index="resolvePath(route) || route.redirect"
+        v-for="_route in usePermissionStoreHook().wholeMenus"
+        :key="_route.path"
+        :index="resolvePath(_route) || _route.redirect"
       >
         <template #title>
           <div
-            v-if="toRaw(route.meta.icon)"
-            :class="['sub-menu-icon', route.meta.icon]"
+            v-if="toRaw(_route.meta.icon)"
+            class="sub-menu-icon"
+            :class="[_route.meta.icon]"
           >
             <component
-              :is="useRenderIcon(route.meta && toRaw(route.meta.icon))"
+              :is="useRenderIcon(_route.meta && toRaw(_route.meta.icon))"
             />
           </div>
           <div :style="getDivStyle">
             <span class="select-none">
-              {{ route.meta.title }}
+              {{ _route.meta.title }}
             </span>
-            <LaySidebarExtraIcon :extraIcon="route.meta.extraIcon" />
+            <LaySidebarExtraIcon :extra-icon="_route.meta.extraIcon" />
           </div>
         </template>
       </el-menu-item>
@@ -100,7 +101,7 @@ watch(
       <!-- 退出登录 -->
       <el-dropdown trigger="click">
         <span class="el-dropdown-link navbar-bg-hover select-none">
-          <img :src="userAvatar" :style="avatarsStyle" />
+          <img :src="userAvatar" :style="avatarsStyle">
           <p v-if="username" class="dark:text-white">{{ username }}</p>
         </span>
         <template #dropdown>

@@ -1,30 +1,26 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { noticesData } from "./data";
-import NoticeList from "./components/NoticeList.vue";
-import BellIcon from "@iconify-icons/ep/bell";
+import BellIcon from '@iconify-icons/ep/bell'
+import { computed, ref } from 'vue'
+import NoticeList from './components/NoticeList.vue'
+import { noticesData } from './data'
 
-const noticesNum = ref(0);
-const notices = ref(noticesData);
-const activeKey = ref(noticesData[0]?.key);
+const noticesNum = ref(0)
+const notices = ref(noticesData)
+const activeKey = ref(noticesData[0]?.key)
 
-notices.value.map(v => (noticesNum.value += v.list.length));
+notices.value.map(v => (noticesNum.value += v.list.length))
 
 const getLabel = computed(
   () => item =>
-    item.name + (item.list.length > 0 ? `(${item.list.length})` : "")
-);
+    item.name + (item.list.length > 0 ? `(${item.list.length})` : ''),
+)
 </script>
 
 <template>
   <el-dropdown trigger="click" placement="bottom-end">
     <span
-      :class="[
-        'dropdown-badge',
-        'navbar-bg-hover',
-        'select-none',
-        Number(noticesNum) !== 0 && 'mr-[10px]'
-      ]"
+      class="dropdown-badge navbar-bg-hover select-none"
+      :class="[Number(noticesNum) !== 0 && 'mr-[10px]']"
     >
       <el-badge :value="Number(noticesNum) === 0 ? '' : noticesNum" :max="99">
         <span class="header-notice-icon">
@@ -50,7 +46,10 @@ const getLabel = computed(
               <el-tab-pane :label="getLabel(item)" :name="`${item.key}`">
                 <el-scrollbar max-height="330px">
                   <div class="noticeList-container">
-                    <NoticeList :list="item.list" :emptyText="item.emptyText" />
+                    <NoticeList
+                      :list="item.list"
+                      :empty-text="item.emptyText"
+                    />
                   </div>
                 </el-scrollbar>
               </el-tab-pane>

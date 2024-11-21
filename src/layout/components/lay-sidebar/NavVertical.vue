@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { useRoute } from "vue-router";
-import { emitter } from "@/utils/mitt";
-import { useNav } from "@/layout/hooks/useNav";
-import { responsiveStorageNameSpace } from "@/config";
-import { storageLocal, isAllEmpty } from "@pureadmin/utils";
-import { findRouteByPath, getParentPaths } from "@/router/utils";
-import { usePermissionStoreHook } from "@/store/modules/permission";
-import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
-import LaySidebarLogo from "../lay-sidebar/components/SidebarLogo.vue";
-import LaySidebarItem from "../lay-sidebar/components/SidebarItem.vue";
-import LaySidebarLeftCollapse from "../lay-sidebar/components/SidebarLeftCollapse.vue";
-import LaySidebarCenterCollapse from "../lay-sidebar/components/SidebarCenterCollapse.vue";
+import { responsiveStorageNameSpace } from '@/config'
+import { useNav } from '@/layout/hooks/useNav'
+import { findRouteByPath, getParentPaths } from '@/router/utils'
+import { usePermissionStoreHook } from '@/store/modules/permission'
+import { emitter } from '@/utils/mitt'
+import { isAllEmpty, storageLocal } from '@pureadmin/utils'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import LaySidebarCenterCollapse from '../lay-sidebar/components/SidebarCenterCollapse.vue'
+import LaySidebarItem from '../lay-sidebar/components/SidebarItem.vue'
+import LaySidebarLeftCollapse from '../lay-sidebar/components/SidebarLeftCollapse.vue'
+import LaySidebarLogo from '../lay-sidebar/components/SidebarLogo.vue'
 
-const route = useRoute();
-const isShow = ref(false);
+const route = useRoute()
+const isShow = ref(false)
 const showLogo = ref(
   storageLocal().getItem<StorageConfigs>(
-    `${responsiveStorageNameSpace()}configure`
-  )?.showLogo ?? true
-);
+    `${responsiveStorageNameSpace()}configure`,
+  )?.showLogo ?? true,
+)
 
 const {
   device,
@@ -26,70 +26,73 @@ const {
   isCollapse,
   tooltipEffect,
   menuSelect,
-  toggleSideBar
-} = useNav();
+  toggleSideBar,
+} = useNav()
 
-const subMenuData = ref([]);
+const subMenuData = ref([])
 
 const menuData = computed(() => {
-  return pureApp.layout === "mix" && device.value !== "mobile"
+  return pureApp.layout === 'mix' && device.value !== 'mobile'
     ? subMenuData.value
-    : usePermissionStoreHook().wholeMenus;
-});
+    : usePermissionStoreHook().wholeMenus
+})
 
 const loading = computed(() =>
-  pureApp.layout === "mix" ? false : menuData.value.length === 0 ? true : false
-);
+  pureApp.layout === 'mix' ? false : menuData.value.length === 0,
+)
 
 const defaultActive = computed(() =>
-  !isAllEmpty(route.meta?.activePath) ? route.meta.activePath : route.path
-);
+  !isAllEmpty(route.meta?.activePath) ? route.meta.activePath : route.path,
+)
 
 function getSubMenuData() {
-  let path = "";
-  path = defaultActive.value;
-  subMenuData.value = [];
+  let path = ''
+  path = defaultActive.value
+  subMenuData.value = []
   // path的上级路由组成的数组
   const parentPathArr = getParentPaths(
     path,
-    usePermissionStoreHook().wholeMenus
-  );
+    usePermissionStoreHook().wholeMenus,
+  )
   // 当前路由的父级路由信息
   const parenetRoute = findRouteByPath(
     parentPathArr[0] || path,
-    usePermissionStoreHook().wholeMenus
-  );
-  if (!parenetRoute?.children) return;
-  subMenuData.value = parenetRoute?.children;
+    usePermissionStoreHook().wholeMenus,
+  )
+  if (!parenetRoute?.children)
+    return
+  subMenuData.value = parenetRoute?.children
 }
 
 watch(
   () => [route.path, usePermissionStoreHook().wholeMenus],
   () => {
-    if (route.path.includes("/redirect")) return;
-    getSubMenuData();
-    menuSelect(route.path);
-  }
-);
+    if (route.path.includes('/redirect'))
+      return
+    getSubMenuData()
+    menuSelect(route.path)
+  },
+)
 
 onMounted(() => {
-  getSubMenuData();
+  getSubMenuData()
 
-  emitter.on("logoChange", key => {
-    showLogo.value = key;
-  });
-});
+  emitter.on('logoChange', (key) => {
+    showLogo.value = key
+  })
+})
 
 onBeforeUnmount(() => {
   // 解绑`logoChange`公共事件，防止多次触发
-  emitter.off("logoChange");
-});
+  emitter.off('logoChange')
+})
 </script>
 
 <template>
   <div
     v-loading="loading"
-    :class="['sidebar-container', showLogo ? 'has-logo' : 'no-logo']"
+    class="sidebar-container"
+    :class="[showLogo ? 'has-logo' : 'no-logo']"
     @mouseenter.prevent="isShow = true"
     @mouseleave.prevent="isShow = false"
   >
@@ -120,12 +123,12 @@ onBeforeUnmount(() => {
     <LaySidebarCenterCollapse
       v-if="device !== 'mobile' && (isShow || isCollapse)"
       :is-active="pureApp.sidebar.opened"
-      @toggleClick="toggleSideBar"
+      @toggle-click="toggleSideBar"
     />
     <LaySidebarLeftCollapse
       v-if="device !== 'mobile'"
       :is-active="pureApp.sidebar.opened"
-      @toggleClick="toggleSideBar"
+      @toggle-click="toggleSideBar"
     />
   </div>
 </template>

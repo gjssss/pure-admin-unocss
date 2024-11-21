@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { isUrl } from "@pureadmin/utils";
-import { menuType } from "@/layout/types";
+import type { menuType } from '@/layout/types'
+import { isUrl } from '@pureadmin/utils'
+import { computed } from 'vue'
 
 const props = defineProps<{
-  to: menuType;
-}>();
+  to: menuType
+}>()
 
-const isExternalLink = computed(() => isUrl(props.to.name));
-const getLinkProps = (item: menuType) => {
+const isExternalLink = computed(() => isUrl(props.to.name))
+function getLinkProps(item: menuType) {
   if (isExternalLink.value) {
     return {
       href: item.name,
-      target: "_blank",
-      rel: "noopener"
-    };
+      target: '_blank',
+      rel: 'noopener',
+    }
   }
   return {
-    to: item
-  };
-};
+    to: item,
+  }
+}
 </script>
 
 <template>

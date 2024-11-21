@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { useNav } from "@/layout/hooks/useNav";
-import LaySearch from "../lay-search/index.vue";
-import LayNotice from "../lay-notice/index.vue";
-import LayNavMix from "../lay-sidebar/NavMix.vue";
-import LaySidebarFullScreen from "../lay-sidebar/components/SidebarFullScreen.vue";
-import LaySidebarBreadCrumb from "../lay-sidebar/components/SidebarBreadCrumb.vue";
-import LaySidebarTopCollapse from "../lay-sidebar/components/SidebarTopCollapse.vue";
+import { useNav } from '@/layout/hooks/useNav'
+import LogoutCircleRLine from '@iconify-icons/ri/logout-circle-r-line'
+import Setting from '@iconify-icons/ri/settings-3-line'
+import LayNotice from '../lay-notice/index.vue'
+import LaySearch from '../lay-search/index.vue'
+import LaySidebarBreadCrumb from '../lay-sidebar/components/SidebarBreadCrumb.vue'
+import LaySidebarFullScreen from '../lay-sidebar/components/SidebarFullScreen.vue'
 
-import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
-import Setting from "@iconify-icons/ri/settings-3-line";
+import LaySidebarTopCollapse from '../lay-sidebar/components/SidebarTopCollapse.vue'
+import LayNavMix from '../lay-sidebar/NavMix.vue'
 
 const {
   layout,
@@ -19,8 +19,8 @@ const {
   username,
   userAvatar,
   avatarsStyle,
-  toggleSideBar
-} = useNav();
+  toggleSideBar,
+} = useNav()
 </script>
 
 <template>
@@ -29,7 +29,7 @@ const {
       v-if="device === 'mobile'"
       class="hamburger-container"
       :is-active="pureApp.sidebar.opened"
-      @toggleClick="toggleSideBar"
+      @toggle-click="toggleSideBar"
     />
 
     <LaySidebarBreadCrumb
@@ -49,7 +49,7 @@ const {
       <!-- 退出登录 -->
       <el-dropdown trigger="click">
         <span class="el-dropdown-link navbar-bg-hover select-none">
-          <img :src="userAvatar" :style="avatarsStyle" />
+          <img :src="userAvatar" :style="avatarsStyle">
           <p v-if="username" class="dark:text-white">{{ username }}</p>
         </span>
         <template #dropdown>

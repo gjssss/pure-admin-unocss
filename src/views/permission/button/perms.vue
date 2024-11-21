@@ -1,24 +1,28 @@
 <script setup lang="ts">
-import { hasPerms } from "@/utils/auth";
-import { useUserStoreHook } from "@/store/modules/user";
-
-const { permissions } = useUserStoreHook();
+import { useUserStoreHook } from '@/store/modules/user'
+import { hasPerms } from '@/utils/auth'
 
 defineOptions({
-  name: "PermissionButtonLogin"
-});
+  name: 'PermissionButtonLogin',
+})
+
+const { permissions } = useUserStoreHook()
 </script>
 
 <template>
   <div>
-    <p class="mb-2">当前拥有的code列表：{{ permissions }}</p>
+    <p class="mb-2">
+      当前拥有的code列表：{{ permissions }}
+    </p>
     <p v-show="permissions?.[0] === '*:*:*'" class="mb-2">
       *:*:* 代表拥有全部按钮级别权限
     </p>
 
     <el-card shadow="never" class="mb-2">
       <template #header>
-        <div class="card-header">组件方式判断权限</div>
+        <div class="card-header">
+          组件方式判断权限
+        </div>
       </template>
       <el-space wrap>
         <Perms value="permission:btn:add">
@@ -35,7 +39,7 @@ defineOptions({
           :value="[
             'permission:btn:add',
             'permission:btn:edit',
-            'permission:btn:delete'
+            'permission:btn:delete',
           ]"
         >
           <el-button plain type="danger">
@@ -48,7 +52,9 @@ defineOptions({
 
     <el-card shadow="never" class="mb-2">
       <template #header>
-        <div class="card-header">函数方式判断权限</div>
+        <div class="card-header">
+          函数方式判断权限
+        </div>
       </template>
       <el-space wrap>
         <el-button v-if="hasPerms('permission:btn:add')" plain type="warning">
@@ -66,7 +72,7 @@ defineOptions({
             hasPerms([
               'permission:btn:add',
               'permission:btn:edit',
-              'permission:btn:delete'
+              'permission:btn:delete',
             ])
           "
           plain
@@ -95,7 +101,7 @@ defineOptions({
           v-perms="[
             'permission:btn:add',
             'permission:btn:edit',
-            'permission:btn:delete'
+            'permission:btn:delete',
           ]"
           plain
           type="danger"

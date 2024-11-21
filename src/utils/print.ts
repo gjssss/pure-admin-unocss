@@ -1,3 +1,5 @@
+/* eslint-disable eslint-comments/no-unlimited-disable */
+/* eslint-disable */
 interface PrintFunction {
   extendOptions: Function;
   getStyle: Function;
@@ -7,8 +9,9 @@ interface PrintFunction {
 
 const Print = function (dom, options?: object): PrintFunction {
   options = options || {};
-  // @ts-expect-error
-  if (!(this instanceof Print)) return new Print(dom, options);
+  if (!(this instanceof Print))
+    // @ts-expect-error
+    return new Print(dom, options);
   this.conf = {
     styleStr: "",
     // Elements that need to dynamically get and set the height
@@ -16,7 +19,7 @@ const Print = function (dom, options?: object): PrintFunction {
     // Callback before printing
     printBeforeFn: null,
     // Callback after printing
-    printDoneCallBack: null
+    printDoneCallBack: null,
   };
   for (const key in this.conf) {
     if (key && options.hasOwnProperty(key)) {
@@ -38,16 +41,16 @@ Print.prototype = {
   /**
    * init
    */
-  init: function (): void {
+  init(): void {
     const content = this.getStyle() + this.getHtml();
     this.writeIframe(content);
   },
   /**
    * Configuration property extension
-   * @param {Object} obj
-   * @param {Object} obj2
+   * @param {object} obj
+   * @param {object} obj2
    */
-  extendOptions: function <T>(obj, obj2: T): T {
+  extendOptions<T>(obj, obj2: T): T {
     for (const k in obj2) {
       obj[k] = obj2[k];
     }
@@ -55,8 +58,8 @@ Print.prototype = {
   },
   /**
     Copy all styles of the original page
-  */
-  getStyle: function (): string {
+   */
+  getStyle(): string {
     let str = "";
     const styles: NodeListOf<Element> = document.querySelectorAll("style,link");
     for (let i = 0; i < styles.length; i++) {
@@ -66,7 +69,7 @@ Print.prototype = {
     return str;
   },
   // form assignment
-  getHtml: function (): Element {
+  getHtml(): Element {
     const inputs = document.querySelectorAll("input");
     const selects = document.querySelectorAll("select");
     const textareas = document.querySelectorAll("textarea");
@@ -120,8 +123,8 @@ Print.prototype = {
   },
   /**
     create iframe
-  */
-  writeIframe: function (content) {
+   */
+  writeIframe(content) {
     let w: Document | Window;
     let doc: Document;
     const iframe: HTMLIFrameElement = document.createElement("iframe");
@@ -152,7 +155,7 @@ Print.prototype = {
         _this.conf.printBeforeFn({ doc });
       }
       _this.toPrint(w);
-      setTimeout(function () {
+      setTimeout(() => {
         document.body.removeChild(iframe);
         // After popup, callback
         if (_this.conf.printDoneCallBack) {
@@ -163,10 +166,10 @@ Print.prototype = {
   },
   /**
     Print
-  */
-  toPrint: function (frameWindow): void {
+   */
+  toPrint(frameWindow): void {
     try {
-      setTimeout(function () {
+      setTimeout(() => {
         frameWindow.focus();
         try {
           if (!frameWindow.document.execCommand("print", false, null)) {
@@ -200,14 +203,14 @@ Print.prototype = {
    */
   setDomHeight(arr) {
     if (arr && arr.length) {
-      arr.forEach(name => {
+      arr.forEach((name) => {
         const domArr = document.querySelectorAll(name);
-        domArr.forEach(dom => {
-          dom.style.height = dom.offsetHeight + "px";
+        domArr.forEach((dom) => {
+          dom.style.height = `${dom.offsetHeight}px`;
         });
       });
     }
-  }
+  },
 };
 
 export default Print;
