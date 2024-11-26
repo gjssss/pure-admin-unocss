@@ -5530,7 +5530,6 @@ export interface components {
     }
     'response.Response': {
       code?: number
-      data?: string
       msg?: string
     }
     'response.SysAPIListResponse': {

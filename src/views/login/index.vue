@@ -35,6 +35,14 @@ const { title } = useNav()
 const ruleForm = reactive({
   username: 'admin',
   password: 'admin123',
+  captcha: '',
+})
+
+const { state: captcha } = useAsyncState(client.POST('/base/captcha').then(d => d.data.data), {
+  captchaId: '0',
+  captchaLength: 6,
+  openCaptcha: false,
+  picPath: '',
 })
 
 async function onLogin(formEl: FormInstance | undefined) {
@@ -141,6 +149,21 @@ onBeforeUnmount(() => {
                   :prefix-icon="useRenderIcon(Lock)"
                 />
               </el-form-item>
+            </Motion>
+
+            <Motion :delay="150">
+              <div class="flex gap-20px items-center">
+                <div class="max-w-40%">
+                  <img :src="captcha.picPath" alt="验证码">
+                </div>
+                <el-form-item prop="captcha" class="flex-1 m-0!">
+                  <el-input
+                    v-model="ruleForm.captcha"
+                    clearable
+                    placeholder="验证码"
+                  />
+                </el-form-item>
+              </div>
             </Motion>
 
             <Motion :delay="250">

@@ -6,7 +6,7 @@ export const REGEXP_PWD
   = /^(?!\d+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^[^\n\r\u2028\u2029\u4E00-\u9FA5]*[\u4E00-\u9FA5].*$)([\s\S]){8,18}$/
 
 /** 登录校验 */
-const loginRules = reactive(<FormRules>{
+const loginRules = reactive<FormRules>({
   password: [
     {
       validator: (rule, value, callback) => {
@@ -23,6 +23,13 @@ const loginRules = reactive(<FormRules>{
         }
       },
       trigger: 'blur',
+    },
+  ],
+  captcha: [
+    {
+      trigger: 'blur',
+      required: true,
+      message: '请输入验证码',
     },
   ],
 })
