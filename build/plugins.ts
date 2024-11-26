@@ -6,7 +6,10 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import { visualizer } from 'rollup-plugin-visualizer'
 import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
-import checker from 'vite-plugin-checker'
+import {
+  ElementPlusResolver,
+} from 'unplugin-vue-components/resolvers'
+import Components from 'unplugin-vue-components/vite'
 import { vitePluginFakeServer } from 'vite-plugin-fake-server'
 import removeConsole from 'vite-plugin-remove-console'
 import removeNoMatch from 'vite-plugin-router-warn'
@@ -16,7 +19,6 @@ import { genScssMultipleScopeVars } from '../src/layout/theme'
 import { cdn } from './cdn'
 import { configCompressPlugin } from './compress'
 import { viteBuildInfo } from './info'
-import { pathResolve } from './utils'
 
 export function getPluginsList(
   VITE_CDN: boolean,
@@ -41,17 +43,13 @@ export function getPluginsList(
       ],
       dts: './types/auto-imports.d.ts',
     }),
-    checker({
-      typescript: true,
-      vueTsc: true,
-      eslint: {
-        lintCommand: `eslint ${pathResolve(
-          '../{src,mock,build}/**/*.{vue,js,ts,tsx}',
-        )}`,
-        useFlatConfig: true,
-      },
-      terminal: false,
-      enableBuild: false,
+    Components({
+      resolvers: [
+        ElementPlusResolver(),
+      ],
+      dirs: './src/custom-components/**',
+      dts: './types/components.d.ts',
+      exclude: ['index.vue'],
     }),
     // 按下Command(⌘)+Shift(⇧)，然后点击页面元素会自动打开本地IDE并跳转到对应的代码位置
     Inspector(),
