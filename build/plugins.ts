@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { visualizer } from 'rollup-plugin-visualizer'
 import Unocss from 'unocss/vite'
+import AutoImport from 'unplugin-auto-import/vite'
 import checker from 'vite-plugin-checker'
 import { vitePluginFakeServer } from 'vite-plugin-fake-server'
 import removeConsole from 'vite-plugin-remove-console'
@@ -27,6 +28,19 @@ export function getPluginsList(
     // jsx、tsx语法支持
     vueJsx(),
     Unocss(),
+    AutoImport({
+      imports: [
+        'vue',
+        '@vueuse/core',
+        'pinia',
+        'vue-router',
+      ],
+      dirs: [
+        './src/utils',
+        './src/store',
+      ],
+      dts: './types/auto-imports.d.ts',
+    }),
     checker({
       typescript: true,
       vueTsc: true,
