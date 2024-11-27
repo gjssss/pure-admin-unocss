@@ -7,7 +7,6 @@ import { useDataThemeChange } from '@/layout/hooks/useDataThemeChange'
 import { useLayout } from '@/layout/hooks/useLayout'
 import { useNav } from '@/layout/hooks/useNav'
 import { getTopMenu, initRouter } from '@/router/utils'
-import { useUserStoreHook } from '@/store/modules/user'
 import { message } from '@/utils/message'
 import Lock from '@iconify-icons/ri/lock-fill'
 import User from '@iconify-icons/ri/user-3-fill'
@@ -15,7 +14,6 @@ import { onBeforeUnmount, onMounted, reactive, ref, toRaw } from 'vue'
 
 import { useRouter } from 'vue-router'
 import Motion from './utils/motion'
-import { loginRules } from './utils/rule'
 import { avatar, bg, illustration } from './utils/static'
 
 defineOptions({
@@ -48,25 +46,27 @@ const { state: captcha } = useAsyncState(client.POST('/base/captcha').then(d => 
 async function onLogin(formEl: FormInstance | undefined) {
   if (!formEl)
     return
-  await formEl.validate((valid) => {
+  await formEl.validate(async (valid) => {
     if (valid) {
       loading.value = true
-      useUserStoreHook()
-        .loginByUsername({ username: ruleForm.username, password: 'admin123' })
-        .then((res) => {
-          if (res.success) {
-            // 获取后端路由
-            return initRouter().then(() => {
-              router.push(getTopMenu(true).path).then(() => {
-                message('登录成功', { type: 'success' })
-              })
-            })
-          }
-          else {
-            message('登录失败', { type: 'error' })
-          }
-        })
-        .finally(() => (loading.value = false))
+      try {
+        await useUserStore()
+          .login({
+            username: ruleForm.username,
+            password: ruleForm.password,
+            captcha: ruleForm.captcha,
+            captchaID: captcha.value.captchaId,
+          })
+        await initRouter()
+        router.push(getTopMenu(true).path)
+        message('登录成功', { type: 'success' })
+      }
+      catch (e) {
+        message(e.message, { type: 'error' })
+      }
+      finally {
+        loading.value = false
+      }
     }
   })
 }
@@ -116,7 +116,6 @@ onBeforeUnmount(() => {
           <el-form
             ref="ruleFormRef"
             :model="ruleForm"
-            :rules="loginRules"
             size="large"
           >
             <Motion :delay="100">
@@ -140,7 +139,16 @@ onBeforeUnmount(() => {
             </Motion>
 
             <Motion :delay="150">
-              <el-form-item prop="password">
+              <el-form-item
+                prop="password"
+                :rules="[
+                  {
+                    required: true,
+                    message: '请输入密码',
+                    trigger: 'blur',
+                  },
+                ]"
+              >
                 <el-input
                   v-model="ruleForm.password"
                   clearable
@@ -151,12 +159,22 @@ onBeforeUnmount(() => {
               </el-form-item>
             </Motion>
 
-            <Motion :delay="150">
+            <Motion v-if="captcha.openCaptcha" :delay="150">
               <div class="flex gap-20px items-center">
                 <div class="max-w-40%">
                   <img :src="captcha.picPath" alt="验证码">
                 </div>
-                <el-form-item prop="captcha" class="flex-1 m-0!">
+                <el-form-item
+                  prop="captcha"
+                  :rules="[
+                    {
+                      required: true,
+                      message: '请输入验证码',
+                      trigger: 'blur',
+                    },
+                  ]"
+                  class="flex-1 m-0!"
+                >
                   <el-input
                     v-model="ruleForm.captcha"
                     clearable

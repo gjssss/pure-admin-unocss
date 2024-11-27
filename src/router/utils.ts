@@ -24,7 +24,6 @@ import {
 import { router } from './index'
 
 // 动态路由
-import { getAsyncRoutes } from '@/api/routes'
 
 const IFrame = () => import('@/layout/frame.vue')
 // https://cn.vitejs.dev/guide/features.html#glob-import
@@ -204,9 +203,9 @@ function initRouter() {
     }
     else {
       return new Promise((resolve) => {
-        getAsyncRoutes().then(({ data }) => {
-          handleAsyncRoutes(cloneDeep(data))
-          storageLocal().setItem(key, data)
+        client.POST('/menu/getMenu').then(({ data }) => data.data).then(({ menus }) => {
+          handleAsyncRoutes(cloneDeep(menus))
+          storageLocal().setItem(key, menus)
           resolve(router)
         })
       })
@@ -214,8 +213,8 @@ function initRouter() {
   }
   else {
     return new Promise((resolve) => {
-      getAsyncRoutes().then(({ data }) => {
-        handleAsyncRoutes(cloneDeep(data))
+      client.POST('/menu/getMenu').then(({ data }) => data.data).then(({ menus }) => {
+        handleAsyncRoutes(cloneDeep(menus))
         resolve(router)
       })
     })
@@ -312,6 +311,9 @@ function addAsyncRoutes(arrRoutes: Array<RouteRecordRaw>) {
   arrRoutes.forEach((v: RouteRecordRaw) => {
     // 将backstage属性加入meta，标识此路由为后端返回路由
     v.meta.backstage = true
+    if (v?.children === null) {
+      delete v.children
+    }
     // 父级的redirect属性取值：如果子级存在且父级的redirect属性不存在，默认取第一个子级的path；如果子级存在且父级的redirect属性存在，取存在的redirect属性，会覆盖默认值
     if (v?.children && v.children.length && !v.redirect)
       v.redirect = v.children[0].path

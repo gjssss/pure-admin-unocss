@@ -1,8 +1,8 @@
+import type { components } from '~types/schema'
 import { getConfig } from '@/config'
 import { useMultiTagsStoreHook } from '@/store/modules/multiTags'
 import { usePermissionStoreHook } from '@/store/modules/permission'
 import {
-  type DataInfo,
   multipleTabsKey,
   removeToken,
   userKey,
@@ -115,7 +115,7 @@ router.beforeEach((to: ToRouteType, _from, next) => {
       handleAliveRoute(to)
     }
   }
-  const userInfo = storageLocal().getItem<DataInfo<number>>(userKey)
+  const userInfo = storageLocal().getItem<components['schemas']['system.SysUser']>(userKey)
   NProgress.start()
   const externalLink = isUrl(to?.name as string)
   if (!externalLink) {
