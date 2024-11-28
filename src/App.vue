@@ -2,6 +2,7 @@
 import { ReDialog } from '@/components/ReDialog'
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import plusZhCn from 'plus-pro-components/es/locale/lang/zh-cn'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -12,7 +13,7 @@ export default defineComponent({
   },
   computed: {
     currentLocale() {
-      return zhCn
+      return { ...zhCn, ...plusZhCn }
     },
   },
 })

@@ -3071,12 +3071,7 @@ export interface paths {
         path?: never
         cookie?: never
       }
-      requestBody?: {
-        content: {
-          /** @example  */
-          'application/json': components['schemas']['request.PageInfo']
-        }
-      }
+      requestBody?: never
       responses: {
         /** @description 分页获取基础menu列表,返回包括列表,总数,页码,每页数量 */
         200: {
@@ -3085,7 +3080,7 @@ export interface paths {
           }
           content: {
             'application/json': components['schemas']['response.Response'] & {
-              data?: components['schemas']['response.PageResult']
+              data?: components['schemas']['system.SysMenu'][]
               msg?: string
             }
           }
@@ -5530,7 +5525,6 @@ export interface components {
     }
     'response.Response': {
       code?: number
-      msg?: string
     }
     'response.SysAPIListResponse': {
       apis?: components['schemas']['system.SysApi'][]

@@ -1,5 +1,6 @@
 import type { PluginOption } from 'vite'
 import process from 'node:process'
+import { PlusProComponentsResolver } from '@plus-pro-components/resolver'
 import { themePreprocessorPlugin } from '@pureadmin/theme'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
@@ -46,6 +47,7 @@ export function getPluginsList(
     Components({
       resolvers: [
         ElementPlusResolver(),
+        PlusProComponentsResolver(),
       ],
       dirs: './src/custom-components/**',
       dts: './types/components.d.ts',

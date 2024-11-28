@@ -65,6 +65,9 @@ importers:
       pinyin-pro:
         specifier: ^3.24.2
         version: 3.24.2
+      plus-pro-components:
+        specifier: ^0.1.18
+        version: 0.1.18(element-plus@2.8.0(vue@3.4.38(typescript@5.5.4)))(vue@3.4.38(typescript@5.5.4))
       qs:
         specifier: ^6.13.0
         version: 6.13.0
@@ -117,6 +120,9 @@ importers:
       '@iconify/vue':
         specifier: ^4.1.2
         version: 4.1.2(vue@3.4.38(typescript@5.5.4))
+      '@plus-pro-components/resolver':
+        specifier: ^0.0.3
+        version: 0.0.3
       '@pureadmin/theme':
         specifier: ^3.2.0
         version: 3.2.0
@@ -1232,6 +1238,9 @@ packages:
   '@pkgr/core@0.1.1':
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
+
+  '@plus-pro-components/resolver@0.0.3':
+    resolution: {integrity: sha512-aHoi8la+UPZoMB7zrvwpVWV+9CkyuW9efmahUORFfB8XxntC3ikobnGltxn3/sAMCBWtsJMBD3GcYmP9UxN8vA==}
 
   '@polka/url@1.0.0-next.28':
     resolution: {integrity: sha512-8LduaNlMZGwdZ6qWrKlfa+2M4gahzFkprZiAt2TF8uS0qQgBizKXpXURqvTJ4WtmupWxaLqjRb2UCTe72mu+Aw==}
@@ -3798,6 +3807,12 @@ packages:
     resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==}
     engines: {node: '>=4'}
 
+  plus-pro-components@0.1.18:
+    resolution: {integrity: sha512-pHJ2sohvU/e13Q7gCEIsbm9+/+rjOYis6gAzFVqNwqO4JepzznbDGH6mYfji5OnZ+e6x/2tDiodPq+KcG0bMGQ==}
+    peerDependencies:
+      element-plus: ^2.3.4
+      vue: ^3.2.0
+
   popmotion@11.0.5:
     resolution: {integrity: sha512-la8gPM1WYeFznb/JqF4GiTkRRPZsfaj2+kCxqQgr2MJylMmIKUwBfWW8Wa5fml/8gmtlD5yI01MP1QCZPWmppA==}
 
@@ -6100,6 +6115,8 @@ snapshots:
     optional: true
 
   '@pkgr/core@0.1.1': {}
+
+  '@plus-pro-components/resolver@0.0.3': {}
 
   '@polka/url@1.0.0-next.28': {}
 
@@ -9135,6 +9152,14 @@ snapshots:
       pathe: 1.1.2
 
   pluralize@8.0.0: {}
+
+  plus-pro-components@0.1.18(element-plus@2.8.0(vue@3.4.38(typescript@5.5.4)))(vue@3.4.38(typescript@5.5.4)):
+    dependencies:
+      '@element-plus/icons-vue': 2.3.1(vue@3.4.38(typescript@5.5.4))
+      element-plus: 2.8.0(vue@3.4.38(typescript@5.5.4))
+      lodash-es: 4.17.21
+      sortablejs: 1.15.2
+      vue: 3.4.38(typescript@5.5.4)
 
   popmotion@11.0.5:
     dependencies:

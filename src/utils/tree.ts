@@ -1,22 +1,22 @@
 /**
- * @description 提取菜单树中的每一项uniqueId
+ * @description 提取菜单树中的每一项
  * @param tree 树
- * @returns 每一项uniqueId组成的数组
+ * @returns 每一项组成的数组
  */
-export function extractPathList(tree: any[]): any {
+export function extractPathList(tree: any[]): any[] {
   if (!Array.isArray(tree)) {
     console.warn('tree must be an array')
     return []
   }
   if (!tree || tree.length === 0)
     return []
-  const expandedPaths: Array<number | string> = []
+  const expandedPaths: Array<any> = []
   for (const node of tree) {
     const hasChildren = node.children && node.children.length > 0
     if (hasChildren) {
-      extractPathList(node.children)
+      expandedPaths.push(...extractPathList(node.children))
     }
-    expandedPaths.push(node.uniqueId)
+    expandedPaths.push(node)
   }
   return expandedPaths
 }

@@ -203,7 +203,7 @@ function initRouter() {
     }
     else {
       return new Promise((resolve) => {
-        client.POST('/menu/getMenu').then(({ data }) => data.data).then(({ menus }) => {
+        client.POST('/menu/getBaseMenuTree').then(({ data }) => data.data).then(({ menus }) => {
           handleAsyncRoutes(cloneDeep(menus))
           storageLocal().setItem(key, menus)
           resolve(router)
@@ -213,7 +213,7 @@ function initRouter() {
   }
   else {
     return new Promise((resolve) => {
-      client.POST('/menu/getMenu').then(({ data }) => data.data).then(({ menus }) => {
+      client.POST('/menu/getBaseMenuTree').then(({ data }) => data.data).then(({ menus }) => {
         handleAsyncRoutes(cloneDeep(menus))
         resolve(router)
       })
