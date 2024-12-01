@@ -48,7 +48,7 @@
     "lint": "pnpm lint:eslint && pnpm lint:stylelint",
     "prepare": "husky",
     "preinstall": "npx only-allow pnpm",
-    "generate-type": "openapi-typescript ./mock/mock.openapi.json -o ./types/schema.ts"
+    "generate-type": "esno -r dotenv/config scripts/generate-type.ts dotenv_config_path=.env.local"
   },
   "dependencies": {
     "@pureadmin/descriptions": "^1.2.1",
@@ -106,6 +106,7 @@
     "autoprefixer": "^10.4.20",
     "boxen": "^7.1.1",
     "cssnano": "^7.0.5",
+    "dotenv": "^16.4.5",
     "eslint": "^9.9.0",
     "esno": "^4.8.0",
     "gradient-string": "^2.0.2",

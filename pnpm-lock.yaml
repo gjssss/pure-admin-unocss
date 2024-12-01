@@ -168,6 +168,9 @@ importers:
       cssnano:
         specifier: ^7.0.5
         version: 7.0.5(postcss@8.4.41)
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
       eslint:
         specifier: ^9.9.0
         version: 9.9.0(jiti@2.4.0)
