@@ -643,7 +643,7 @@ export interface paths {
       requestBody?: {
         content: {
           /** @example  */
-          'application/json': components['schemas']['request.PageInfo']
+          'application/json': null
         }
       }
       responses: {
@@ -654,7 +654,7 @@ export interface paths {
           }
           content: {
             'application/json': components['schemas']['response.Response'] & {
-              data?: components['schemas']['response.PageResult']
+              data?: components['schemas']['system.SysAuthority'][]
               msg?: string
             }
           }
@@ -718,9 +718,8 @@ export interface paths {
       cookie?: never
     }
     get?: never
-    put?: never
     /** 更新角色信息 */
-    post: {
+    put: {
       parameters: {
         query?: never
         header?: never
@@ -748,6 +747,7 @@ export interface paths {
         }
       }
     }
+    post?: never
     delete?: never
     options?: never
     head?: never
@@ -5624,16 +5624,16 @@ export interface components {
       authorityName?: string
       children?: components['schemas']['system.SysAuthority'][]
       /** @description 创建时间 */
-      createdAt?: string
+      CreatedAt?: string
       dataAuthorityId?: components['schemas']['system.SysAuthority'][]
       /** @description 默认菜单(默认dashboard) */
       defaultRouter?: string
-      deletedAt?: string
+      DeletedAt?: string
       menus?: components['schemas']['system.SysBaseMenu'][]
       /** @description 父角色ID */
       parentId?: number
       /** @description 更新时间 */
-      updatedAt?: string
+      UpdatedAt?: string
     }
     'system.SysBaseMenu': {
       /** @description 主键ID */
@@ -5643,7 +5643,7 @@ export interface components {
       /** @description 对应前端文件路径 */
       component?: string
       /** @description 创建时间 */
-      createdAt?: string
+      CreatedAt?: string
       /** @description 是否在列表隐藏 */
       hidden?: boolean
       menuBtn?: components['schemas']['system.SysBaseMenuBtn'][]
@@ -5659,7 +5659,7 @@ export interface components {
       /** @description 排序标记 */
       sort?: number
       /** @description 更新时间 */
-      updatedAt?: string
+      UpdatedAt?: string
     }
     'system.SysBaseMenuBtn': {
       /** @description 主键ID */
@@ -5757,7 +5757,7 @@ export interface components {
       /** @description 对应前端文件路径 */
       component?: string
       /** @description 创建时间 */
-      createdAt?: string
+      CreatedAt?: string
       /** @description 是否在列表隐藏 */
       hidden?: boolean
       menuBtn?: components['schemas']['system.SysBaseMenuBtn'][]
@@ -5774,7 +5774,7 @@ export interface components {
       /** @description 排序标记 */
       sort?: number
       /** @description 更新时间 */
-      updatedAt?: string
+      UpdatedAt?: string
     }
     'system.SysOperationRecord': {
       /** @description 主键ID */

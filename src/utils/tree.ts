@@ -191,3 +191,26 @@ export function handleTree(
   }
   return tree
 }
+
+interface TreeLike {
+  children?: TreeLike[]
+}
+
+export function treeMap<R, T extends TreeLike = TreeLike>(
+  tree: T[],
+  callback: (node: T) => R,
+): (R & TreeLike)[] {
+  return tree.map((node) => {
+    // 对当前节点应用回调函数
+    const newNode = callback(node)
+    // 递归处理子节点
+    if (node.children && node.children.length > 0) {
+      return {
+        ...newNode,
+        children: treeMap(node.children, callback), // 递归处理子节点
+      }
+    }
+
+    return newNode
+  })
+}

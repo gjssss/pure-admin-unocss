@@ -41,6 +41,7 @@ export function getPluginsList(
       dirs: [
         './src/utils',
         './src/store',
+        './src/composables',
       ],
       dts: './types/auto-imports.d.ts',
     }),

@@ -28,3 +28,22 @@ const middleware: Middleware = {
 }
 
 client.use(middleware)
+
+export async function wrapperClient<R, T extends { data?: {
+  data?: R
+  msg?: string
+} }>(requestFn: () => Promise<T>) {
+  try {
+    const { data } = await requestFn()
+    message(data.msg, {
+      type: 'success',
+    })
+    Promise.resolve(data.data)
+  }
+  catch (e) {
+    message(e.message, {
+      type: 'error',
+    })
+    Promise.reject(e.message)
+  }
+}

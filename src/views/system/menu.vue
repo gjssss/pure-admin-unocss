@@ -40,7 +40,7 @@ const defualtFrom = {
 type FromType = typeof defualtFrom
 const formValue = ref<FromType>(cloneDeep(defualtFrom))
 const formVisible = ref(false)
-let formId = 0
+const formId = ref(0)
 const columns = computed<PlusColumn[]>(() => ([
   {
     label: '唯一标识',
@@ -78,7 +78,12 @@ const columns = computed<PlusColumn[]>(() => ([
       ...extractPathList(tableData.value).map(item => ({
         label: item.name,
         value: item.ID,
-      })),
+      })).filter((item) => {
+        if (formId.value === 0)
+          return true
+        else
+          return item.value !== formId.value
+      }),
       {
         label: '无父菜单',
         value: 0,
@@ -163,7 +168,7 @@ const action: ActionBarProps = {
 }
 
 function openForm(id: number, option?: FromType) {
-  formId = id
+  formId.value = id
   if (id === 0) {
     formValue.value = cloneDeep(defualtFrom)
     formVisible.value = true
@@ -175,7 +180,7 @@ function openForm(id: number, option?: FromType) {
 }
 
 async function submitForm(d: FromType) {
-  if (formId === 0) {
+  if (formId.value === 0) {
     try {
       const { data } = await client.POST('/menu/addBaseMenu', {
         body: {
@@ -207,7 +212,7 @@ async function submitForm(d: FromType) {
     try {
       const { data } = await client.POST('/menu/updateBaseMenu', {
         body: {
-          ID: formId,
+          ID: formId.value,
           path: d.path,
           component: d.path,
           name: d.name,

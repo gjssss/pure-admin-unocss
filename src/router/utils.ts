@@ -167,8 +167,12 @@ function handleAsyncRoutes(routeList) {
           router.options.routes[0].children.push(v)
           // 最终路由进行升序
           ascending(router.options.routes[0].children)
-          if (!router.hasRoute(v?.name))
+          if (!router.hasRoute(v?.name)) {
+            if (v.path[0] !== '/') {
+              v.path = `/${v.path}`
+            }
             router.addRoute(v)
+          }
           const flattenRouters: any = router
             .getRoutes()
             .find(n => n.path === '/')
@@ -203,7 +207,7 @@ function initRouter() {
     }
     else {
       return new Promise((resolve) => {
-        client.POST('/menu/getBaseMenuTree').then(({ data }) => data.data).then(({ menus }) => {
+        client.POST('/menu/getMenu').then(({ data }) => data.data).then(({ menus }) => {
           handleAsyncRoutes(cloneDeep(menus))
           storageLocal().setItem(key, menus)
           resolve(router)
@@ -213,7 +217,7 @@ function initRouter() {
   }
   else {
     return new Promise((resolve) => {
-      client.POST('/menu/getBaseMenuTree').then(({ data }) => data.data).then(({ menus }) => {
+      client.POST('/menu/getMenu').then(({ data }) => data.data).then(({ menus }) => {
         handleAsyncRoutes(cloneDeep(menus))
         resolve(router)
       })
