@@ -4658,6 +4658,10 @@ export interface paths {
             'application/json': components['schemas']['response.Response'] & {
               data?: components['schemas']['response.PageResult']
               msg?: string
+            } & {
+              data: {
+                list: components['schemas']['system.SysUser'][]
+              }
             }
           }
         }
@@ -4857,10 +4861,10 @@ export interface components {
       'endpoint'?: string
     }
     'system.SysUserRequest': {
-      Username: string
-      NickName: string
-      Phone: string
-      Email: string
+      Username?: string
+      NickName?: string
+      Phone?: string
+      Email?: string
     }
     'config.Autocode': {
       'ai-path'?: string
@@ -5424,10 +5428,10 @@ export interface components {
       pageSize?: number
     }
     'request.Register': {
-      authorityId?: string
-      authorityIds?: string
+      authorityId?: number
+      authorityIds?: number[]
       email?: string
-      enable?: string
+      enable?: number
       headerImg?: string
       nickName?: string
       passWord?: string
@@ -5516,7 +5520,7 @@ export interface components {
       user?: components['schemas']['system.SysUser']
     }
     'response.PageResult': {
-      list?: string
+      list?: (string | number | boolean | unknown[] | Record<string, never> | null)[]
       page?: number
       pageSize?: number
       total?: number
