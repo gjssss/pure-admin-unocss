@@ -34,6 +34,7 @@ const defualtFrom = {
   name: '',
   title: '',
   path: '',
+  sort: 0,
   parentId: 0,
   hidden: true,
 }
@@ -67,6 +68,12 @@ const columns = computed<PlusColumn[]>(() => ([
     fieldProps: {
       placeholder: '请输入页面路径',
     },
+    labelWidth: '100px',
+  },
+  {
+    label: '排序',
+    prop: 'sort',
+    valueType: 'input-number',
     labelWidth: '100px',
   },
   {
@@ -135,6 +142,7 @@ const action: ActionBarProps = {
           hidden: row.hidden,
           title: row.meta.title,
           parentId: row.parentId,
+          sort: row.sort,
         })
       },
     },
@@ -192,6 +200,7 @@ async function submitForm(d: FromType) {
             title: d.title,
           },
           parentId: d.parentId,
+          sort: d.sort,
         },
       })
       message(data.msg, {
@@ -221,6 +230,7 @@ async function submitForm(d: FromType) {
             title: d.title,
           },
           parentId: d.parentId,
+          sort: d.sort,
         },
       })
       message(data.msg, {
