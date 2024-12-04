@@ -20,6 +20,10 @@ const tableConfig: PlusColumn[] = [
     prop: 'path',
   },
   {
+    label: '组件',
+    prop: 'component',
+  },
+  {
     label: '是否隐藏',
     prop: 'hidden',
   },
@@ -37,6 +41,7 @@ const defualtFrom = {
   sort: 0,
   parentId: 0,
   hidden: true,
+  component: '',
 }
 type FromType = typeof defualtFrom
 const formValue = ref<FromType>(cloneDeep(defualtFrom))
@@ -67,6 +72,15 @@ const columns = computed<PlusColumn[]>(() => ([
     valueType: 'copy',
     fieldProps: {
       placeholder: '请输入页面路径',
+    },
+    labelWidth: '100px',
+  },
+  {
+    label: '组件',
+    prop: 'component',
+    valueType: 'copy',
+    fieldProps: {
+      placeholder: '请输入组件',
     },
     labelWidth: '100px',
   },
@@ -143,6 +157,7 @@ const action: ActionBarProps = {
           title: row.meta.title,
           parentId: row.parentId,
           sort: row.sort,
+          component: row.component,
         })
       },
     },
@@ -193,7 +208,7 @@ async function submitForm(d: FromType) {
       const { data } = await client.POST('/menu/addBaseMenu', {
         body: {
           path: d.path,
-          component: d.path,
+          component: d.component,
           name: d.name,
           hidden: d.hidden,
           meta: {
@@ -223,7 +238,7 @@ async function submitForm(d: FromType) {
         body: {
           ID: formId.value,
           path: d.path,
-          component: d.path,
+          component: d.component,
           name: d.name,
           hidden: d.hidden,
           meta: {

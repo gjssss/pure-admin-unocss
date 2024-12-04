@@ -20,6 +20,10 @@ const middleware: Middleware = {
     const data: ResponseData = await response.clone().json()
     if (data.code !== 0) {
       NProgress.done()
+      if (data.msg === '权限不足') {
+        removeToken()
+        router.push('/login')
+      }
       return Promise.reject(new Error(data.msg))
     }
     NProgress.done()

@@ -16,8 +16,15 @@ export const useUserStore = defineStore('user', () => {
     setToken()
   }
 
+  function logout() {
+    removeToken()
+    resetRouter()
+    router.push('/login')
+  }
+
   return {
     data,
     login,
+    logout,
   }
 })

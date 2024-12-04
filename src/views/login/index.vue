@@ -6,7 +6,7 @@ import { useRenderIcon } from '@/components/ReIcon/src/hooks'
 import { useDataThemeChange } from '@/layout/hooks/useDataThemeChange'
 import { useLayout } from '@/layout/hooks/useLayout'
 import { useNav } from '@/layout/hooks/useNav'
-import { getTopMenu, initRouter } from '@/router/utils'
+import { initRouter } from '@/router/utils'
 import { message } from '@/utils/message'
 import Lock from '@iconify-icons/ri/lock-fill'
 import User from '@iconify-icons/ri/user-3-fill'
@@ -32,7 +32,7 @@ const { title } = useNav()
 
 const ruleForm = reactive({
   username: 'admin',
-  password: 'admin123',
+  password: '123123123',
   captcha: '',
 })
 
@@ -58,7 +58,7 @@ async function onLogin(formEl: FormInstance | undefined) {
             captchaID: captcha.value.captchaId,
           })
         await initRouter()
-        router.push(getTopMenu(true).path)
+        router.push('/')
         message('登录成功', { type: 'success' })
       }
       catch (e) {
