@@ -185,6 +185,9 @@ const rules = {
           if (formValue.value.rePassWord !== formValue.value.passWord) {
             callback(new Error('两次密码不一样'))
           }
+          else {
+            callback()
+          }
         }
         else {
           callback()
