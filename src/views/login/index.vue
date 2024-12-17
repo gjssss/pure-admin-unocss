@@ -6,12 +6,12 @@ import { useRenderIcon } from '@/components/ReIcon/src/hooks'
 import { useDataThemeChange } from '@/layout/hooks/useDataThemeChange'
 import { useLayout } from '@/layout/hooks/useLayout'
 import { useNav } from '@/layout/hooks/useNav'
-import { initRouter } from '@/router/utils'
+import { router as routerInstance } from '@/router/index'
 import { message } from '@/utils/message'
 import Lock from '@iconify-icons/ri/lock-fill'
 import User from '@iconify-icons/ri/user-3-fill'
-import { onBeforeUnmount, onMounted, reactive, ref, toRaw } from 'vue'
 
+import { onBeforeUnmount, onMounted, reactive, ref, toRaw } from 'vue'
 import { useRouter } from 'vue-router'
 import Motion from './utils/motion'
 import { avatar, bg, illustration } from './utils/static'
@@ -57,7 +57,8 @@ async function onLogin(formEl: FormInstance | undefined) {
             captcha: ruleForm.captcha,
             captchaID: captcha.value.captchaId,
           })
-        await initRouter()
+        await initializeRoute(routerInstance)
+        // await initRouter()
         router.push('/')
         message('登录成功', { type: 'success' })
       }

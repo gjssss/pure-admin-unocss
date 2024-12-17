@@ -35,6 +35,7 @@ const props = defineProps({
     default: '',
   },
 })
+
 const attrs = useAttrs()
 const { layout, isCollapse, tooltipEffect, getDivStyle } = useNav()
 

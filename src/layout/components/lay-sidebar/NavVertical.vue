@@ -2,7 +2,6 @@
 import { responsiveStorageNameSpace } from '@/config'
 import { useNav } from '@/layout/hooks/useNav'
 import { findRouteByPath, getParentPaths } from '@/router/utils'
-import { usePermissionStoreHook } from '@/store/modules/permission'
 import { emitter } from '@/utils/mitt'
 import { isAllEmpty, storageLocal } from '@pureadmin/utils'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
@@ -29,12 +28,14 @@ const {
   toggleSideBar,
 } = useNav()
 
+const auth = useAuthStore()
+
 const subMenuData = ref([])
 
 const menuData = computed(() => {
   return pureApp.layout === 'mix' && device.value !== 'mobile'
     ? subMenuData.value
-    : usePermissionStoreHook().wholeMenus
+    : auth.menuList
 })
 
 const loading = computed(() =>
@@ -52,12 +53,12 @@ function getSubMenuData() {
   // path的上级路由组成的数组
   const parentPathArr = getParentPaths(
     path,
-    usePermissionStoreHook().wholeMenus,
+    auth.menuList,
   )
   // 当前路由的父级路由信息
   const parenetRoute = findRouteByPath(
     parentPathArr[0] || path,
-    usePermissionStoreHook().wholeMenus,
+    auth.menuList,
   )
   if (!parenetRoute?.children)
     return
@@ -65,7 +66,7 @@ function getSubMenuData() {
 }
 
 watch(
-  () => [route.path, usePermissionStoreHook().wholeMenus],
+  () => [route.path, auth.menuList],
   () => {
     if (route.path.includes('/redirect'))
       return

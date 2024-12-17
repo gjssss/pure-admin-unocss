@@ -1,6 +1,5 @@
 import type { components } from '~types/schema'
 import { getConfig } from '@/config'
-import { useMultiTagsStoreHook } from '@/store/modules/multiTags'
 import { usePermissionStoreHook } from '@/store/modules/permission'
 import {
   multipleTabsKey,
@@ -9,7 +8,7 @@ import {
 } from '@/utils/auth'
 import NProgress from '@/utils/progress'
 import { buildHierarchyTree } from '@/utils/tree'
-import { isAllEmpty, isUrl, openLink, storageLocal } from '@pureadmin/utils'
+import { isUrl, openLink, storageLocal } from '@pureadmin/utils'
 // import "@/utils/sso";
 import Cookies from 'js-cookie'
 import {
@@ -21,13 +20,10 @@ import {
 import remainingRouter from './modules/remaining'
 import {
   ascending,
-  findRouteByPath,
   formatFlatteningRoutes,
   formatTwoStageRoutes,
   getHistoryMode,
-  getTopMenu,
   handleAliveRoute,
-  initRouter,
   isOneOfArray,
 } from './utils'
 
@@ -100,6 +96,7 @@ export function resetRouter() {
     }
   })
   usePermissionStoreHook().clearAllCachePage()
+  useAuthStore().menuList = []
 }
 
 /** 路由白名单 */
@@ -154,41 +151,44 @@ router.beforeEach((to: ToRouteType, _from, next) => {
     else {
       // 刷新
       if (
-        usePermissionStoreHook().wholeMenus.length === 0
+        useAuthStore().menuList.length === 0
         && to.path !== '/login'
       ) {
-        initRouter().then((router: Router) => {
-          if (!useMultiTagsStoreHook().getMultiTagsCache) {
-            const { path } = to
-            const route = findRouteByPath(
-              path,
-              router.options.routes[0].children,
-            )
-            getTopMenu(true)
-            // query、params模式路由传参数的标签页不在此处处理
-            if (route && route.meta?.title) {
-              if (isAllEmpty(route.parentId) && route.meta?.backstage) {
-                // 此处为动态顶级路由（目录）
-                const { path, name, meta } = route.children[0]
-                useMultiTagsStoreHook().handleTags('push', {
-                  path,
-                  name,
-                  meta,
-                })
-              }
-              else {
-                const { path, name, meta } = route
-                useMultiTagsStoreHook().handleTags('push', {
-                  path,
-                  name,
-                  meta,
-                })
-              }
-            }
-          }
-          // 确保动态路由完全加入路由列表并且不影响静态路由（注意：动态路由刷新时router.beforeEach可能会触发两次，第一次触发动态路由还未完全添加，第二次动态路由才完全添加到路由列表，如果需要在router.beforeEach做一些判断可以在to.name存在的条件下去判断，这样就只会触发一次）
-          if (isAllEmpty(to.name))
-            router.push(to.fullPath)
+        // initRouter().then((router: Router) => {
+        //   if (!useMultiTagsStoreHook().getMultiTagsCache) {
+        //     const { path } = to
+        //     const route = findRouteByPath(
+        //       path,
+        //       router.options.routes[0].children,
+        //     )
+        //     getTopMenu(true)
+        //     // query、params模式路由传参数的标签页不在此处处理
+        //     if (route && route.meta?.title) {
+        //       if (isAllEmpty(route.parentId) && route.meta?.backstage) {
+        //         // 此处为动态顶级路由（目录）
+        //         const { path, name, meta } = route.children[0]
+        //         useMultiTagsStoreHook().handleTags('push', {
+        //           path,
+        //           name,
+        //           meta,
+        //         })
+        //       }
+        //       else {
+        //         const { path, name, meta } = route
+        //         useMultiTagsStoreHook().handleTags('push', {
+        //           path,
+        //           name,
+        //           meta,
+        //         })
+        //       }
+        //     }
+        //   }
+        //   // 确保动态路由完全加入路由列表并且不影响静态路由（注意：动态路由刷新时router.beforeEach可能会触发两次，第一次触发动态路由还未完全添加，第二次动态路由才完全添加到路由列表，如果需要在router.beforeEach做一些判断可以在to.name存在的条件下去判断，这样就只会触发一次）
+        //   if (isAllEmpty(to.name))
+        //     router.push(to.fullPath)
+        // })
+        initializeRoute(router).then(() => {
+          router.push('/')
         })
       }
       toCorrectRoute()
